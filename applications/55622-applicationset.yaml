@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: lh-dev1
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        directories:
+          - path: "*"
+        repoURL: https://github.com/ridlawiz/argocd-demo
+        revision: main
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  template:
+    metadata:
+      name: "{{index .path.segments 0}}"
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: my-argo-project
+      destination:
+        namespace: "{{index .path.segments 0}}"
+        server: https://kubernetes.default.svc
+      sources:
+        - repoURL: https://github.com/ridlawiz/argocd-demo
+          targetRevision: main
+          path: "{{index .path.segments 0}}/helm/"
+          helm:
+            releaseName: "{{index .path.segments 0}}"
+            valueFiles:
+              - dev-cluster-values.yml
+              - common-values.yml
+        - repoURL: https://github.com/metacore-games/lighthouse-addons
+          targetRevision: main
+          path: "{{index .path.segments 0}}/kustomize/cluster/"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
