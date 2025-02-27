@@ -15,7 +15,7 @@ dependencies:
   repository: https://wiz-sec.github.io/charts
   version:  ">=3.6.0"
   condition: wiz-admission-controller.enabled
-# - name: wiz-sensor
-#   repository: https://wiz-sec.github.io/charts
-#   version: ">=1.0.5835"
-#   condition: wiz-sensor.enabled
+- name: wiz-sensor
+  repository: https://wiz-sec.github.io/charts
+  version: ">=1.0.5835"
+  condition: wiz-sensor.enabled

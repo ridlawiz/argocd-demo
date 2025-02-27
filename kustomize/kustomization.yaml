@@ -4,13 +4,13 @@ kind: Kustomization
 namespace: wiz
 
 resources:
-  - namespace.yml
-  - secrets.yml
+  - namespace.yaml
+  - secrets.yaml
 
 helmCharts:
 - name: wiz-kubernetes-integration
   repo: https://charts.wiz.io/
   releaseName: wiz-kubernetes-integration
   namespace: wiz
-  valuesFile: values.yml
-  version: 0.1.95
+  valuesFile: values.yaml
+  version: 0.2.75
