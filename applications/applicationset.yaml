@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: lh-dev1
+  name: test-appset
   namespace: argocd
 spec:
   goTemplate: true
