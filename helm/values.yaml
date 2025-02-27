@@ -1,0 +1,37 @@
+# Configuration file (values.yaml) for a public cluster.
+# Kubernetes Connector without the Wiz Broker (i.e. broker: enabled: false) on public Kubernetes clusters
+# For public cluster (when not using broker i.e broker.enabled: false), wiz-kubernetes-connector.autoCreateConnector.apiServerEndpoint: "" should be set.
+# "kubectl cluster-info" to get the apiServerEndpoint for public clusters
+# Ticket 39663 demo for private 
+
+
+global:
+  wizApiToken:
+    secret:
+      create: false
+      name: wiz-sa
+ 
+wiz-kubernetes-connector:
+  enabled: true
+  autoCreateConnector:
+    clusterFlavor: EKS
+    connectorName: "rid-55622-connector"
+    apiServerEndpoint: "https://7F29BAD1286F3310C594DEC91EC24E68.gr7.us-east-2.eks.amazonaws.com"  # For public clusters, you need to enter the cluster's API endpoint URL. Run "Kubectl cluster-info" to view this info. remove this line for private cluster (i.e broker.enabled: true)
+  wiz-broker:         
+    enabled: true    
+ 
+# wiz-sensor:
+#   enabled: true
+#   imagePullSecret:
+#     create: false
+#     name: sensor-image-pull
+ 
+wiz-admission-controller:
+  enabled: true
+  opaWebhook:
+    enabled: true
+    policies: [] # List of policies to enforce on the misconfiguration webhook. If not set, by default AC will get policies from Wiz based on projects.
+  
+  imageIntegrityWebhook:
+   enabled: false 
+   policies: [] # List of policies to enforce on the image integrity webhook. If not set, by default AC will get policies from Wiz based on projects.

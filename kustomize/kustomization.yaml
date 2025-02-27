@@ -7,10 +7,10 @@ resources:
   - namespace.yaml
   - secrets.yaml
 
-helmCharts:
-- name: wiz-kubernetes-integration
-  repo: https://charts.wiz.io/
-  releaseName: wiz-kubernetes-integration
-  namespace: wiz
-  valuesFile: ../helm/values.yaml
-  version: 0.2.75
+# helmCharts:
+# - name: wiz-kubernetes-integration
+#   repo: https://charts.wiz.io/
+#   releaseName: wiz-kubernetes-integration
+#   namespace: wiz
+#   valuesFile: values.yaml
+#   version: 0.2.75
