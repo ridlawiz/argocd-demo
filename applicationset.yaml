@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-appset
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        directories:
+          - path: "*"
+        repoURL: https://github.com/ridlawiz/argocd-demo  # Update repoURL here
+        revision: main
+  template:
+    metadata:
+      name: "{{index .path.segments 0}}-test"
+    spec:
+      project: default   #can be changed to another project name in argocd
+      destination:
+        namespace: "{{index .path.segments 0}}"
+        server: "https://kubernetes.default.svc"
+      sources:
+        - repoURL: https://github.com/ridlawiz/argocd-demo
+          targetRevision: main
+          path: "{{index .path.segments 0}}"
+          helm:
+            releaseName: "{{index .path.segments 0}}-release"
+            valueFiles:
+              - values.yaml
+        - repoURL: https://github.com/ridlawiz/argocd-demo
+          targetRevision: main
+          path: "{{index .path.segments 0}}/kustomize/"
+          
