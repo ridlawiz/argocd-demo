@@ -23,7 +23,7 @@ spec:
       sources:
         - repoURL: https://github.com/ridlawiz/argocd-demo
           targetRevision: main
-          path: "{{index .path.segments 0}}/helm/"
+          path: "{{index .path.segments 0}}/helm"
           helm:
             releaseName: "{{index .path.segments 0}}-release"
             valueFiles:
