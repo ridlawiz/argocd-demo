@@ -28,3 +28,7 @@ spec:
             releaseName: "{{index .path.segments 0}}-release"
             valueFiles:
               - values.yaml
+        - repoURL: https://github.com/ridlawiz/argocd-demo
+          targetRevision: main
+          path: "{{index .path.segments 0}}/kustomize/"
+          
