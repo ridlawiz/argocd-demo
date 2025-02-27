@@ -16,7 +16,7 @@ spec:
     metadata:
       name: "{{index .path.segments 0}}-test"
     spec:
-      project: default
+      project: default   #can be changed to another project name in argocd
       destination:
         namespace: "{{index .path.segments 0}}"
         server: "https://kubernetes.default.svc"
