@@ -12,5 +12,5 @@ helmCharts:
   repo: https://charts.wiz.io/
   releaseName: wiz-kubernetes-integration
   namespace: wiz
-  valuesFile: values.yaml
+  valuesFile: ../helm/values.yaml
   version: 0.2.75

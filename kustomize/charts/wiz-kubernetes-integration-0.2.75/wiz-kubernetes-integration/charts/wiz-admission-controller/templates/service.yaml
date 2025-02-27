@@ -1,0 +1,38 @@
+{{- if eq (include "wiz-admission-controller.isEnforcerEnabled" . | trim | lower) "true" }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wiz-admission-controller-enforcer.name" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "wiz-admission-controller-enforcement.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+  selector:
+    {{- include "wiz-admission-controller.selectorLabels" . | nindent 4 }}
+    {{- include "wiz-admission-controller-enforcement.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{ if .Values.kubernetesAuditLogsWebhook.enabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wiz-kubernetes-audit-log-collector.name" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "wiz-kubernetes-audit-log-collector.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+  selector:
+    {{- include "wiz-admission-controller.selectorLabels" . | nindent 4 }}
+    {{- include "wiz-kubernetes-audit-log-collector.selectorLabels" . | nindent 4 }}
+{{- end }}
