@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: wiz-integration
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/jlarrea-wiz/charts
+        revision: master
+        directories:
+          - path: "*"
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  template:
+    metadata:
+      name: wiz-integration
+    spec:
+      project: default
+      destination:
+        namespace: wiz
+        server: https://kubernetes.default.svc
+      sources:
+        - repoURL: https://github.com/jlarrea-wiz/charts
+          targetRevision: master
+          path: wiz-kubernetes-integration/
+          helm:
+            valueFiles:
+              - ../custom-values/values.yaml
+        - repoURL: https://github.com/jlarrea-wiz/charts
+          targetRevision: master
+          path: kustomize/
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
